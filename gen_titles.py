@@ -27,8 +27,9 @@ def search_laws(key, title, max_len):
 	return ret_str
 
 def gen_title():
-	fout = open('question_data_format', 'w')
-	fin = open('question_data', 'r')
+	filename = 'all_titles/交通相关_'
+	fout = open(filename + 'expand', 'a')
+	fin = open(filename + 'base', 'r')
 	for line in fin:
 		while True:
 			title = line.strip().split('\t')[0]
