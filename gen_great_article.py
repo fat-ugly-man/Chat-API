@@ -1,13 +1,5 @@
 #-*- coding:utf-8 -*-
 
-import os, sys
-CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(CURRENT_DIR + '/../') 
-
-from setting import *
-from sqlalchemy import distinct
-from elasticsearch import Elasticsearch
-
 import datetime
 import json
 import requests
@@ -78,6 +70,7 @@ from_day = datetime.datetime.now().replace(hour=0, minute=0, second=0, microseco
 to_day = datetime.datetime.now().replace(hour=23, minute=59, second=59, microsecond=999999)
 day_str = datetime.datetime.now().strftime('%Y%m%d')
 
+aid = '0'
 fout = open('articles.txt', 'w')
 fin = open('article_out_' + day_str, 'r')
 for line in fin:
@@ -92,7 +85,6 @@ for line in fin:
 	text = re.sub(r'\n+', '\n', text)
 	text = text.replace('LawyerGPT.com.cn', 'www.lawyergpt.com.cn').replace('LawyerGPT.com', 'www.lawyergpt.com.cn')
 	text = text.replace('www.LawyerGPT.com.cn', 'www.lawyergpt.com.cn').replace('www.LawyerGPT.com', 'www.lawyergpt.com.cn')
-	aid = str(cur_id)
 	source_url = 'https://www.lawyergpt.com.cn/article/' + aid + '.html'
 	url = '/pages/index/article?content_id=' + aid
 	title = text.split('内容正文：')[0].split('标题：')[-1]
@@ -105,7 +97,6 @@ for line in fin:
 		end_content = content[-500:].split('对不起')[0]
 		content = content[:-500] + end_content
 		content = content + '只需访问www.lawyergpt.com.cn，就可以轻松找到适合您的律师，并与其进行在线沟通和协商。LawyerGPT平台保证您的隐私安全和信息保密，让您享受便捷、高效、优质的法律服务。'
-	cat1, cat2, cat3 = getcats(title)
 	
 	print ('网页链接：' + source_url, file=fout)
 	print ('小程序链接：' + url, file=fout)

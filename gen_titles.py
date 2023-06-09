@@ -27,12 +27,19 @@ def search_laws(key, title, max_len):
 	return ret_str
 
 def gen_title():
-	filename = 'all_titles/交通相关_'
-	fout = open(filename + 'expand', 'a')
-	fin = open(filename + 'base', 'r')
+	filename = 'all_titles/mix_data_0'
+	fout = open(filename + '_expand', 'a')
+	fin = open(filename, 'r')
+	'''
+	filename = 'question_data'
+	fout = open(filename + '_format', 'a')
+	fin = open(filename, 'r')
+	'''
 	for line in fin:
 		while True:
-			title = line.strip().split('\t')[0]
+			cat = line.strip().split('\t')[0]
+			title = line.strip().split('\t')[1]
+			print (title)
 			max_len = (3500 - len(title)) // 6
 			laws_str = ''
 			laws_str += search_laws('answer', title, max_len)
@@ -47,8 +54,8 @@ def gen_title():
 				ret_str = res['data']['answer'].replace('\n','\sb')
 				ret_list = ret_str.strip().split('\sb')
 				for item in ret_list[-5:]:
-					print (item)
-					print (item, file=fout)
+					print (cat + '\t' + item)
+					print (cat + '\t' + item, file=fout)
 				break
 			else:
 				print ('Error:{}'.format(res))
